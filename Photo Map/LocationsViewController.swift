@@ -49,6 +49,10 @@ class LocationsViewController: UIViewController, UITableViewDelegate, UITableVie
         return cell
     }
 
+    func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
+        return UIView()
+    }
+    
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         // This is the selected venue
         let venue = results[(indexPath as NSIndexPath).row] as! NSDictionary
