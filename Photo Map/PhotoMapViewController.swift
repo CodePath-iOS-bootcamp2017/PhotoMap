@@ -31,28 +31,47 @@ class PhotoMapViewController: UIViewController, UIImagePickerControllerDelegate,
     }
     
     func addPin(lat: NSNumber, long: NSNumber) {
-        let annotation = MKPointAnnotation()
+        let annotation = PhotoAnnotation()
         let locationCoordinate = CLLocationCoordinate2D(latitude: CLLocationDegrees(lat), longitude: CLLocationDegrees(long))
         annotation.coordinate = locationCoordinate
-        annotation.title = String(describing: lat)
+//        annotation.title = String(describing: lat)
+        annotation.photo = self.pickedImage
         self.mapView.addAnnotation(annotation)
     }
     
     func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
+        
+        let resizeRenderImageView = UIImageView(frame: CGRect(x: 0, y: 0, width: 45, height: 45))
+        resizeRenderImageView.layer.borderColor = UIColor.white.cgColor
+        resizeRenderImageView.layer.borderWidth = 3.0
+        resizeRenderImageView.contentMode = UIViewContentMode.scaleAspectFill
+        resizeRenderImageView.image = (annotation as? PhotoAnnotation)?.photo
+        
+        UIGraphicsBeginImageContext(resizeRenderImageView.frame.size)
+        resizeRenderImageView.layer.render(in: UIGraphicsGetCurrentContext()!)
+        let thumbnail = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
+        
         let reuseID = "myAnnotationView"
         
         var annotationView = mapView.dequeueReusableAnnotationView(withIdentifier: reuseID)
         if (annotationView == nil) {
-            annotationView = MKPinAnnotationView(annotation: annotation, reuseIdentifier: reuseID)
+            annotationView = MKAnnotationView(annotation: annotation, reuseIdentifier: reuseID)
             annotationView!.canShowCallout = true
             annotationView!.leftCalloutAccessoryView = UIImageView(frame: CGRect(x:0, y:0, width: 50, height:50))
+            annotationView?.image = thumbnail
+            annotationView?.layer.borderWidth = 3.0
+            annotationView?.layer.borderColor = UIColor.white.cgColor
+            annotationView?.rightCalloutAccessoryView = UIButton(type: UIButtonType.detailDisclosure)
         }
         
-        let imageView = annotationView?.leftCalloutAccessoryView as! UIImageView
-        // Add the image you stored from the image picker
-        imageView.image = pickedImage
-        
+        annotationView?.leftCalloutAccessoryView = resizeRenderImageView
         return annotationView
+    }
+    
+    func mapView(_ mapView: MKMapView, annotationView view: MKAnnotationView, calloutAccessoryControlTapped control: UIControl) {
+        print("calloutAccessoryControlTapped")
+        performSegue(withIdentifier: "fullImageSegue", sender: view)
     }
     
     fileprivate func setupUI(){
@@ -124,9 +143,26 @@ class PhotoMapViewController: UIViewController, UIImagePickerControllerDelegate,
         if segue.identifier == "tagSegue" {
             let locationsViewController = segue.destination as! LocationsViewController
             locationsViewController.delegate = self
+        }else if segue.identifier == "fullImageSegue" {
+            let fullImageViewController = segue.destination as! FullImageViewController
+            if let annotationView = sender as? MKAnnotationView {
+                if let pAnnotation = annotationView.annotation as? PhotoAnnotation{
+                    fullImageViewController.poster = pAnnotation.photo
+                }
+            }
         }
+        
             
     }
     
 
+}
+
+class PhotoAnnotation: NSObject, MKAnnotation {
+    var coordinate: CLLocationCoordinate2D = CLLocationCoordinate2DMake(0, 0)
+    var photo: UIImage!
+    
+    var title: String? {
+        return "\(coordinate.latitude)"
+    }
 }

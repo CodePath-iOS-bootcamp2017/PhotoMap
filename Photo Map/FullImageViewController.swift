@@ -10,10 +10,12 @@ import UIKit
 
 class FullImageViewController: UIViewController {
 
+    @IBOutlet weak var posterImageView: UIImageView!
+    
+    var poster: UIImage?
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        // Do any additional setup after loading the view.
+        self.setupUI()
     }
 
     override func didReceiveMemoryWarning() {
@@ -21,6 +23,11 @@ class FullImageViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     
+    func setupUI(){
+        if let image = self.poster{
+            self.posterImageView.image = image
+        }
+    }
 
     /*
     // MARK: - Navigation

@@ -71,13 +71,27 @@
                     <view key="view" contentMode="scaleToFill" id="IER-PT-2nq">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="34y-YK-TJ5">
+                                <rect key="frame" x="0.0" y="64" width="375" height="603"/>
+                            </imageView>
+                        </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <constraints>
+                            <constraint firstItem="34y-YK-TJ5" firstAttribute="leading" secondItem="IER-PT-2nq" secondAttribute="leading" id="4zB-VN-Zhg"/>
+                            <constraint firstItem="N8d-FM-OAP" firstAttribute="top" secondItem="34y-YK-TJ5" secondAttribute="bottom" id="LkP-E4-z0d"/>
+                            <constraint firstItem="34y-YK-TJ5" firstAttribute="top" secondItem="FF8-mr-LhG" secondAttribute="bottom" id="Tcc-ZY-yBC"/>
+                            <constraint firstAttribute="trailing" secondItem="34y-YK-TJ5" secondAttribute="trailing" id="bCv-eb-1k2"/>
+                        </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="HUo-VF-R6y"/>
+                    <connections>
+                        <outlet property="posterImageView" destination="34y-YK-TJ5" id="BnR-b8-P2P"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="QRl-fe-rlf" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="641" y="777"/>
+            <point key="canvasLocation" x="640.5" y="776.5"/>
         </scene>
         <!--Add Location-->
         <scene sceneID="iO8-f3-thv">
